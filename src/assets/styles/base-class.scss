@@ -1,0 +1,48 @@
+@import "./variables.scss";
+@import "@/assets/styles/mixins.scss";
+
+// 主题字体颜色
+.theme-font-color {
+  color: $theme-color !important;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.wbba {
+  word-break: break-all;
+}
+
+.wspw {
+  white-space: pre-wrap;
+}
+
+.oya {
+  overflow-y: auto !important;
+}
+
+.tac {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.wpr {
+  white-space: pre;
+}
+
+.udn {
+  -webkit-user-drag: none;
+}
+
+.mt10 {
+  margin-top: 10px !important;
+}
+
+.w100 {
+  width: 100% !important;
+}
+
+.w150px {
+  width: 150px !important;
+}

@@ -1,0 +1,54 @@
+import React from 'react'
+import { Button, Popconfirm } from 'antd'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+
+interface Props {
+  onDelete?: () => void
+  onAdd?: () => void
+  selectedRowKeys: string[]
+}
+
+const Toolbar: React.FC<Props> = function({
+  selectedRowKeys,
+  onDelete,
+  onAdd
+}) {
+  const showToolbar = onDelete || onAdd
+  const selectedLen = selectedRowKeys.length
+  const disabled = selectedLen <= 0
+
+  return showToolbar ? (
+    <div className="table-action-panel">
+      {onAdd && (
+        <Button
+          type="primary"
+          onClick={onAdd}
+          icon={<PlusOutlined />}
+        >
+          Create
+        </Button>
+      )}
+
+      {onDelete && (
+        <Popconfirm
+          title={`Are you sure you want to delete the selected ${selectedLen} records?`}
+          onConfirm={onDelete}
+          placement="bottomLeft"
+          okType="danger"
+          disabled={disabled}
+        >
+          <Button
+            type="primary"
+            danger
+            disabled={disabled}
+            icon={<DeleteOutlined />}
+          >
+            Delete
+          </Button>
+        </Popconfirm>
+      )}
+    </div>
+  ) : null
+}
+
+export default Toolbar

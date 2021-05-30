@@ -1,0 +1,112 @@
+// https://ui.toast.com/tui-editor/
+import React, { useState, useEffect, useCallback } from 'react'
+import './style.scss'
+import Editor from '@toast-ui/editor'
+import { Input, Button, message } from 'antd'
+import { RouteComponentProps, match } from 'react-router-dom'
+import { HOME } from '@/router/constants'
+import { defaultTitle } from './constants'
+import {
+  serviceCreateMemorandum,
+  serviceGetMemorandumById,
+  serviceUpdateMemorandum
+} from '@/services'
+
+interface Props {
+  computedMatch: match<any>
+}
+
+let editor: Editor
+
+const CreatePage: React.FC<Props & RouteComponentProps> = ({ history, computedMatch }) => {
+  const [title, setTitle] = useState(defaultTitle)
+  const [loading, setLoading] = useState(false)
+
+  const handleActionButton = useCallback((buttonType: 0 | 1) => {
+    if (buttonType === 0) {
+      history.replace(HOME.MEMORANDUM.path)
+      return
+    }
+
+    const id = computedMatch.params.id
+
+    if (loading) return
+    console.log(editor);
+    // 创建或更新
+    const params = {
+      markdown: editor.getHtml(),
+      title
+    }
+    
+    if (!params.markdown) {
+      message.warn('The content cannot be empty.')
+      return
+    }
+
+    setLoading(true);
+
+    (id ? serviceUpdateMemorandum(id, params) : serviceCreateMemorandum(params))
+    .then(res => {
+      if (res.data.success) {
+        history.replace(HOME.MEMORANDUM.path)
+      }
+    })
+  }, [history, title, loading, computedMatch])
+
+  const init = useCallback(() => {
+    const id = computedMatch.params.id
+
+    editor = new Editor({
+      el: document.querySelector('#edit-section') as HTMLDivElement,
+      initialEditType: 'markdown',
+      previewStyle: 'vertical',
+      usageStatistics: false
+    })
+
+    if (id) {
+      serviceGetMemorandumById(id)
+      .then(res => {
+        if (res.data.success) {
+          setTitle(res.data.data.title)
+          editor.setMarkdown(res.data.data.markdown)
+        }
+      })
+    }
+  }, [computedMatch])
+
+  useEffect(() => {
+    init()
+
+    return () => {
+      // 销毁实例
+      editor?.remove()
+    }
+  }, [init])
+
+  return (
+    <div className="editor-page">
+      <Input
+        className="input-title"
+        placeholder={defaultTitle}
+        maxLength={50}
+        size="large"
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+        onBlur={() => (!title && setTitle(defaultTitle))}
+      />
+      <div id="edit-section"></div>
+      <div className="button-group">
+        <Button onClick={handleActionButton.bind(null, 0)}>Cancel</Button>
+        <Button
+          type="primary"
+          onClick={handleActionButton.bind(null, 1)}
+          loading={loading}
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+export default CreatePage
