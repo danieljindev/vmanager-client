@@ -31,13 +31,12 @@ const CreatePage: React.FC<Props & RouteComponentProps> = ({ history, computedMa
     const id = computedMatch.params.id
 
     if (loading) return
-    console.log(editor);
+
     // 创建或更新
     const params = {
       markdown: editor.getHtml(),
       title
     }
-    
     if (!params.markdown) {
       message.warn('The content cannot be empty.')
       return
