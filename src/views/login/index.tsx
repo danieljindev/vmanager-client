@@ -31,8 +31,8 @@ type LoginProps = {
 
 const PopoverContent = (
   <div style={{ padding: '10px 20px 10px 20px' }}>
-    <div>本站不开放注册账号，首次登陆请使用GitHub</div>
-    <div>登陆后系统将自动注册账号, 密码为123456</div>
+    <div>This App does not open account registration, please use GitHub for the first login</div>
+    <div>After logging in, the system will automatically register an account, the password is 123456</div>
   </div>
 )
 
@@ -94,7 +94,7 @@ const LoginPage: React.FC<LoginProps> = function ({
     const { token, state } = query
 
     if (Number(state) === 0) {
-      message.error('授权失败，请重新登录')
+      message.error('Authorization failed, please log in again')
       return
     }
 
@@ -137,12 +137,12 @@ const LoginPage: React.FC<LoginProps> = function ({
               rules={[
                 {
                   required: true,
-                  message: "请输入用户名"
+                  message: "please enter user name"
                 }
               ]}
             >
               <Input
-                placeholder="用户名"
+                placeholder="Username"
                 prefix={<UserOutlined />}
                 maxLength={32}
                 autoComplete="off"
@@ -155,12 +155,12 @@ const LoginPage: React.FC<LoginProps> = function ({
               rules={[
                 {
                   required: true,
-                  message: "请输入密码"
+                  message: "Please enter the password"
                 }
               ]}
             >
               <Input
-                placeholder="密码"
+                placeholder="Password"
                 prefix={<LockOutlined />}
                 maxLength={32}
                 type="password"
@@ -174,16 +174,16 @@ const LoginPage: React.FC<LoginProps> = function ({
               rules={[
                 {
                   required: true,
-                  message: "请输入验证码"
+                  message: "Verification code"
                 },
                 {
                   pattern: /.{4}/,
-                  message: "请输入正确验证码"
+                  message: "Please enter the correct verification code"
                 }
               ]}
             >
               <Input
-                placeholder="请输入验证码"
+                placeholder="Verification code"
                 prefix={<PictureOutlined />}
                 maxLength={4}
                 autoComplete="off"
@@ -208,7 +208,7 @@ const LoginPage: React.FC<LoginProps> = function ({
             block
             onClick={handleSubmit}
           >
-            {loading ? '登 录 中...' : '登 录'}
+            {loading ? 'Loading...' : 'Register'}
           </Button>
           <div className="register">
             <Popover
@@ -216,7 +216,7 @@ const LoginPage: React.FC<LoginProps> = function ({
               trigger="hover"
               placement="bottomRight"
             >
-              <span>注册账号</span>
+              <span>Register an account</span>
             </Popover>
           </div>
           <Button
@@ -227,7 +227,7 @@ const LoginPage: React.FC<LoginProps> = function ({
             icon={<GithubOutlined />}
             onClick={githubHandler}
           >
-            使用 Github 登录
+            Log in with Github
           </Button>
         </div>
       </div>
